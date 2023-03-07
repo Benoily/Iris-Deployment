@@ -1,38 +1,28 @@
-from flask import Flask,request,render_template,url_for
 import numpy as np
-from sklearn.preprocessing import StandardScaler
-import joblib as joblib
-import os
+from flask import Flask, request, jsonify, render_template
+import pickle
 
-model=joblib.load('iris_model_LR.pkl')
-scaler=joblib.load('scaler.save')
-
-app =Flask(__name__)
-
-IMG_FOLDER=os.path.join('static','IMG')
-app.config['UPLOAD_FOLDER']=IMG_FOLDER
-
+app = Flask(__name__)
+model = pickle.load(open('model.pkl', 'rb'))
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
-@app.route('/',methods=['GET','POST'])
-def home():
-    if request.method =='POST':
-        sl=request.form['SepalLength']
-        sw = request.form['SepalWidth']
-        pl = request.form['PetalLength']
-        pw = request.form['PetalWidth']
-        data = np.array([[sl, sw, pl, pw]])
-        x = scaler.transform(data)
-        print(x)
-        prediction = model.predict(x)
-        print(prediction)
-        image=prediction[0]+'.png'
-        image=os.path.join(app.config['UPLOAD_FOLDER'],image)
-    return render_template('index.html',prediction=prediction[0],image=image)
+@app.route('/predict',methods=['POST'])
+def predict():
+    '''
+    For rendering results on HTML GUI
+    '''
+    int_features = [float(x) for x in request.form.values()]
+   
+    final_features = [np.array(int_features)]
+    prediction = model.predict(final_features)
+
+    output =prediction[0]
+
+    return render_template('index.html', prediction_text='The Flower is {}'.format(output))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
