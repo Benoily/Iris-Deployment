@@ -1,50 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
 <head>
-
-    <link rel="stylesheet" href="{{ url_for('static',filename='style.css')}}">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iris Classification</title>
+  <meta charset="UTF-8">
+  <title>ML API</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  
 </head>
-<body>
-   
-    <div class="container">
-        <!-- code here -->
-        <div class="card">
-            <div class="card-image">	
-                <h2 class="card-heading">
-                    Iris Classification
-                </h2>
-            </div>
-            <form class="card-form" action="{{ url_for('home')}}" method="POST">
-                <div class="input">
-                    <input name="SepalLength" type="number" step="any"  class="input-field" required/>
-                    <label  class="input-label"> Sepal Length in cm</label>
-                </div>
-                            <div class="input">
-                    <input name="SepalWidth" type="number" step="any"  class="input-field" required/>
-                    <label  class="input-label">Sepal Width in cm</label>
-                </div>
-                            <div class="input">
-                    <input name="PetalLength" type="number" step="any"  class="input-field" required/>
-                    <label  class="input-label">Petal Length in cm</label>
-                </div>
-                <div class="input">
-                    <input name="PetalWidth" type="number" step="any"  class="input-field" required/>
-                    <label  class="input-label">Petal Width in cm</label>
-                </div>
-                <div class="action">
-                    <button type="submit" class="action-button">Submit</button>
-                </div>
-            </form>
 
-            <center><p style="color: darkred; font-weight: bold;">{{ prediction }}</p>
-		<img src="{{ image }}" alt="{{ prediction }}">
-</center>
-        </div>
-    </div>
-    
+<body>
+ <div class="login">
+	<h1>Finding the Flower</h1>
+	 
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+    	<input type="text" name="SepalLength" placeholder="SepalLength" required="required" />
+        <input type="text" name="SepalWidth" placeholder="SepalWidth" required="required" />
+		<input type="text" name="PetalLength" placeholder="PetalLength" required="required" />
+    <input type="text" name="PetalWidth" placeholder="PetalWidth" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+    </form>
+
+   <br>
+   <br>
+   {{ prediction_text }}
+
+ </div>
+
+
 </body>
 </html>
